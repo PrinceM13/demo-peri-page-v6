@@ -241,6 +241,46 @@ curl -X POST http://localhost:8080/print \
 curl http://localhost:8080/health
 ```
 
+## 🧪 Testing
+
+### Run All Tests
+```bash
+make test
+# or
+go test ./... -v
+```
+
+### Run Tests with Coverage
+```bash
+make test-cover
+# Generates coverage.html report
+```
+
+### Test Coverage
+
+| Package | Coverage | Status |
+|---------|----------|--------|
+| **internal/core** | 90.0% | ✅ Excellent |
+| **internal/adapters/api** | 72.7% | ✅ Good |
+| **internal/adapters/printer** | 10.3% | ⚠️ Low (BLE pending) |
+
+### Test Stack
+
+- ✅ **testing** - Go's built-in framework
+- ✅ **testify** - Assertions and mocks
+- ✅ **httptest** - HTTP handler testing
+- ✅ **Build tags** - Separate unit/integration tests
+
+**Full testing guide:** See [TESTING.md](TESTING.md)
+
+**Quick test commands:**
+```bash
+make test              # Run all tests
+make test-cover        # With coverage report
+make test-race         # With race detector
+make test-integration  # Integration tests (requires hardware)
+```
+
 ## 🔌 Printer Adapters
 
 ### Mock Printer

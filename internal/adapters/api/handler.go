@@ -7,9 +7,16 @@ import (
 	"github.com/princem/peripage-printer/internal/core"
 )
 
+// PrintService defines the interface for print operations.
+// This allows for easy mocking in tests.
+type PrintService interface {
+	PrintText(text string) error
+	PrintJSON(data interface{}) error
+}
+
 // Handler manages HTTP requests for the printer API.
 type Handler struct {
-	service *core.PrintService
+	service PrintService
 }
 
 // NewHandler creates a new API handler.
