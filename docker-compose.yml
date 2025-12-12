@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  peripage-printer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peripage-printer-server
+    # Use host network mode to access Bluetooth
+    network_mode: host
+    # Required for Bluetooth access
+    privileged: true
+    volumes:
+      # Mount D-Bus socket for Bluetooth communication
+      - /var/run/dbus:/var/run/dbus
+      # Mount device directory for hardware access
+      - /dev:/dev
+    environment:
+      # Configuration via environment variables
+      - PORT=8080
+      # Use 'mock' for testing without hardware, 'ble' for actual printer
+      - PRINTER_TYPE=mock
+      - PRINTER_DEVICE_NAME=Peripage
+      - PRINTER_TIMEOUT=30s
+      - BLE_SCAN_TIMEOUT=10s
+    restart: unless-stopped
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
